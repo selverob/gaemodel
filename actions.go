@@ -3,6 +3,7 @@ package gaemodel
 import (
 	"appengine"
 	"appengine/datastore"
+	"math"
 )
 
 func Save(c appengine.Context, m Model) (err error) {
@@ -28,22 +29,11 @@ func Delete(c appengine.Context, m Model) (err error) {
 	return
 }
 
-func GetAll(c appengine.Context, kind string, page, perPage int) (ms []Model, err error) {
-	var offset int
-	if page == 0 {
-		perPage = -1
-		offset = 0
-	} else {
-		offset = (page - 1) * perPage
-	}
-
-	ms = make([]Model, 0)
-	keys, err := datastore.NewQuery(kind).Limit(perPage).Offset(offset).GetAll(c, &ms)
+func PageCount(c appengine.Context, kind string, perPage int) (pages int, err error) {
+	count, err := datastore.NewQuery(kind).Count(c)
 	if err != nil {
 		return
 	}
-	for i, k := range keys {
-		ms[i].SetKey(k)
-	}
+	pages = int(math.Ceil(float64(count) / float64(perPage)))
 	return
 }
