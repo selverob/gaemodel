@@ -37,3 +37,16 @@ func PageCount(c appengine.Context, kind string, perPage int) (pages int, err er
 	pages = int(math.Ceil(float64(count) / float64(perPage)))
 	return
 }
+
+func PageQuery(page, perPage int) (offset, limit int) {
+	if page == 0 {
+		limit = -1
+		offset = 0
+		return
+	} else {
+		offset = (page - 1) * perPage
+		limit = perPage
+		return
+	}
+	return
+}
