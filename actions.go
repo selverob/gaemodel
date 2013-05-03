@@ -9,7 +9,7 @@ import (
 func Save(c appengine.Context, m Model) (err error) {
 	if m.GetKey() == nil {
 		var k *datastore.Key
-		k, err = datastore.Put(c, datastore.NewIncompleteKey(c, "Owner", m.GetAncestor()), m)
+		k, err = datastore.Put(c, datastore.NewIncompleteKey(c, m.GetKind(), m.GetAncestor()), m)
 		if err != nil {
 			return
 		}
