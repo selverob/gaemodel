@@ -8,21 +8,21 @@ import (
 )
 
 func Save(c appengine.Context, m Model) (err error) {
-	if m.GetKey() == nil {
+	if m.Key() == nil {
 		var k *datastore.Key
-		k, err = datastore.Put(c, datastore.NewIncompleteKey(c, m.GetKind(), m.GetAncestor()), m)
+		k, err = datastore.Put(c, datastore.NewIncompleteKey(c, m.Kind(), m.Ancestor()), m)
 		if err != nil {
 			return
 		}
 		m.SetKey(k)
 	} else {
-		_, err = datastore.Put(c, m.GetKey(), m)
+		_, err = datastore.Put(c, m.Key(), m)
 	}
 	return
 }
 
 func Delete(c appengine.Context, m Model) (err error) {
-	err = datastore.Delete(c, m.GetKey())
+	err = datastore.Delete(c, m.Key())
 	if err != nil {
 		return err
 	}

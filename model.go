@@ -5,10 +5,10 @@ import (
 )
 
 type Model interface {
-	GetKind() string
+	Kind() string
 
-	GetKey() *datastore.Key
+	Key() *datastore.Key
 	SetKey(*datastore.Key)
 
-	GetAncestor() *datastore.Key
+	Ancestor() *datastore.Key
 }
